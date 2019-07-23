@@ -75,7 +75,7 @@ export default class SignUp extends Component {
                 label="Confirm your email"
                 icon="exclamation-triangle"
                 group
-                type="text"
+                type="email"
                 validate
                 error="wrong"
                 success="right"
