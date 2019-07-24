@@ -9,7 +9,7 @@ export default class LogIn extends Component {
     constructor(props) {
       super(props);
   
-      this.onChangeUsername = this.onChangeUsername.bind(this);
+      this.onChangeEmail = this.onChangeEmail.bind(this);
       this.onSubmit = this.onSubmit.bind(this);
   
       this.state = {
@@ -17,26 +17,26 @@ export default class LogIn extends Component {
       }
     }
   
-    onChangeUsername(e) {
+    onChangeEmail(e) {
       this.setState({
-        username: e.target.value
+        email: e.target.value
       })
     }
   
     onSubmit(e) {
       e.preventDefault();
   
-      const user = {
-        username: this.state.username
+      const Login = {
+        email: this.state.email
       }
   
-      console.log(user);
+      console.log(Login);
   
-      axios.post('http://localhost:5000/users/add', user)
-        .then(res => console.log(res.data));
+     /* axios.post('http://localhost:5000/users/add', user)
+        .then(res => console.log(res.data));*/
   
       this.setState({
-        username: ''
+        email: ''
       })
     }
 
@@ -58,6 +58,7 @@ export default class LogIn extends Component {
                       validate
                       error="wrong"
                       success="right"
+                      name="email"
                     />
                     <MDBInput
                       label="Type your password"
@@ -65,6 +66,7 @@ export default class LogIn extends Component {
                       group
                       type="password"
                       validate
+                      name="password"
                     />
                   </div>
                   <div className="text-center">
@@ -78,6 +80,8 @@ export default class LogIn extends Component {
               </MDBCol>
             </MDBRow>
           </MDBContainer>
+          
+          
         );
       }
       }

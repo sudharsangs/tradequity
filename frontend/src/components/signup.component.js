@@ -12,17 +12,17 @@ export default class SignUp extends Component {
   constructor(props) {
     super(props);
 
-    this.onChangeUsername = this.onChangeUsername.bind(this);
+   this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
-      username: ''
+      email: ''
     }
   }
 
-  onChangeUsername(e) {
+  onChangeEmail(e) {
     this.setState({
-      username: e.target.value
+      email: e.target.value
     })
   }
 
@@ -30,7 +30,7 @@ export default class SignUp extends Component {
     e.preventDefault();
 
     const user = {
-      username: this.state.username
+      email: this.state.email
     }
 
     console.log(user);
@@ -39,7 +39,7 @@ export default class SignUp extends Component {
       .then(res => console.log(res.data));*/
 
     this.setState({
-      username: ''
+      email: ''
     })
   }
 
@@ -61,6 +61,8 @@ export default class SignUp extends Component {
                 validate
                 error="wrong"
                 success="right"
+                name="name"
+              
               />
               <MDBInput
                 label="Your email"
@@ -70,6 +72,7 @@ export default class SignUp extends Component {
                 validate
                 error="wrong"
                 success="right"
+                name="email"
               />
               <MDBInput
                 label="Confirm your email"
@@ -79,6 +82,7 @@ export default class SignUp extends Component {
                 validate
                 error="wrong"
                 success="right"
+                name="email_again"
               />
               <MDBInput
                 label="Your password"
@@ -86,6 +90,7 @@ export default class SignUp extends Component {
                 group
                 type="password"
                 validate
+                name="password"
               />
             </div>
             <div className="text-center">
