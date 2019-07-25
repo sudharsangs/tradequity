@@ -5,6 +5,8 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap-css-only/css/bootstrap.min.css";
 import "mdbreact/dist/css/mdb.css";
 
+      
+    
 export default class LogIn extends Component {
     constructor(props) {
       super(props);
@@ -13,9 +15,27 @@ export default class LogIn extends Component {
       this.onSubmit = this.onSubmit.bind(this);
   
       this.state = {
-        username: ''
+         email: '',
+         password: ''
       }
     }
+    state = {
+      email: {
+        value: "",
+        valid: false
+      },
+      password: {
+        value: "",
+        valid: false
+      }
+      };
+
+
+      changeHandler = event => {
+        this.setState({ [event.target.name]: { value: event.target.value, valid: !!event.target.value } });
+      };
+    
+      
   
     onChangeEmail(e) {
       this.setState({
@@ -40,6 +60,8 @@ export default class LogIn extends Component {
       })
     }
 
+    
+
     render(){
         return (
           <MDBContainer>
@@ -47,7 +69,7 @@ export default class LogIn extends Component {
               <MDBCol md="6">
               <MDBCard>
               <MDBCardBody>
-                <form>
+                <form className="needs-validation">
                   <p className="h5 text-center mb-4">Log In</p>
                   <div className="grey-text">
                     <MDBInput
@@ -59,6 +81,7 @@ export default class LogIn extends Component {
                       error="wrong"
                       success="right"
                       name="email"
+                      required
                     />
                     <MDBInput
                       label="Type your password"
@@ -67,6 +90,7 @@ export default class LogIn extends Component {
                       type="password"
                       validate
                       name="password"
+                      required
                     />
                   </div>
                   <div className="text-center">
