@@ -75,8 +75,8 @@ export default class SignUp extends Component {
                 name="email"
               />
               <MDBInput
-                label="Confirm your email"
-                icon="exclamation-triangle"
+                label="Your password"
+                icon="lock"
                 group
                 type="email"
                 validate
@@ -85,8 +85,8 @@ export default class SignUp extends Component {
                 name="email_again"
               />
               <MDBInput
-                label="Your password"
-                icon="lock"
+                label="Confirm your password"
+                icon="exclamation-triangle"
                 group
                 type="password"
                 validate
