@@ -73,7 +73,7 @@ export default class LogIn extends Component {
                   <p className="h5 text-center mb-4">Log In</p>
                   <div className="grey-text">
                     <MDBInput
-                      label="Type your email"
+                      label="Email"
                       icon="envelope"
                       group
                       type="email"
@@ -84,7 +84,7 @@ export default class LogIn extends Component {
                       required
                     />
                     <MDBInput
-                      label="Type your password"
+                      label="Password"
                       icon="lock"
                       group
                       type="password"

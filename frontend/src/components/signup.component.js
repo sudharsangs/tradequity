@@ -6,6 +6,8 @@ import { MDBContainer, MDBRow, MDBCol, MDBInput, MDBBtn, MDBIcon, MDBCard, MDBCa
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap-css-only/css/bootstrap.min.css";
 import "mdbreact/dist/css/mdb.css";
+import ReactPhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/dist/style.css';
 
 
 export default class SignUp extends Component {
@@ -43,6 +45,8 @@ export default class SignUp extends Component {
     })
   }
 
+ 
+
   render() {
     return (
       <MDBContainer>
@@ -54,7 +58,7 @@ export default class SignUp extends Component {
             <p className="h5 text-center mb-4">Sign up</p>
             <div className="grey-text">
               <MDBInput
-                label="Your name"
+                label="Name"
                 icon="user"
                 group
                 type="text"
@@ -63,9 +67,10 @@ export default class SignUp extends Component {
                 success="right"
                 name="name"
               
+              
               />
               <MDBInput
-                label="Your email"
+                label="Email"
                 icon="envelope"
                 group
                 type="email"
@@ -74,8 +79,12 @@ export default class SignUp extends Component {
                 success="right"
                 name="email"
               />
+             <ReactPhoneInput 
+                 defaultCountry={'in'} 
+                 value={this.state.phone}
+              />
               <MDBInput
-                label="Your password"
+                label="Password"
                 icon="lock"
                 group
                 type="email"
@@ -85,13 +94,28 @@ export default class SignUp extends Component {
                 name="email_again"
               />
               <MDBInput
-                label="Confirm your password"
+                label="Confirm Password"
                 icon="exclamation-triangle"
                 group
                 type="password"
                 validate
                 name="password"
               />
+              <MDBContainer className="mt-5">
+                <MDBInput 
+                 label="Male" 
+                 type="radio"
+                 icon="male" />
+                <MDBInput 
+                 label="Female" 
+                 type="radio"
+                 icon="female" />
+                <MDBInput  
+                 label="Rather Not Specify" 
+                 type="radio"
+                 icon="transgender" />
+    
+              </MDBContainer>
             </div>
             <div className="text-center">
               <MDBBtn gradient="purple" rounded>Sign Up</MDBBtn>
