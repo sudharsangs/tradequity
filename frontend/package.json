@@ -19,6 +19,7 @@
     "react-google-login": "^5.0.4",
     "react-phone-input-2": "^2.9.5",
     "react-phone-number-input": "^2.3.21",
+    "react-radio-buttons": "^1.2.2",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
     "yup": "^0.27.0"

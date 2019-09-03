@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 //import axios from 'axios';
 //import './user-style.css'
 import "bootstrap/dist/css/bootstrap.min.css";
-import { MDBContainer, MDBRow, MDBCol, MDBInput, MDBBtn, MDBIcon, MDBCard, MDBCardBody } from 'mdbreact';
+import { MDBContainer, MDBRow, MDBCol, MDBInput, MDBBtn, MDBIcon, MDBCard, MDBCardBody, MDBBadge } from 'mdbreact';
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap-css-only/css/bootstrap.min.css";
 import "mdbreact/dist/css/mdb.css";
 import ReactPhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/dist/style.css';
+import { RadioGroup, RadioButton, ReversedRadioButton } from 'react-radio-buttons';
 
 
 export default class SignUp extends Component {
@@ -101,21 +102,21 @@ export default class SignUp extends Component {
                 validate
                 name="password"
               />
-              <MDBContainer className="mt-5">
-                <MDBInput 
-                 label="Male" 
-                 type="radio"
-                 icon="male" />
-                <MDBInput 
-                 label="Female" 
-                 type="radio"
-                 icon="female" />
-                <MDBInput  
-                 label="Rather Not Specify" 
-                 type="radio"
-                 icon="transgender" />
-    
-              </MDBContainer>
+              <h5><MDBBadge color="primary">Gender</MDBBadge></h5>
+              <RadioGroup onChange={ this.onChange } horizontal>
+              <RadioButton value="male" iconSize={20}>
+              Male
+             </RadioButton>
+             <RadioButton value="female" iconSize={20}>
+             Female
+             </RadioButton>
+             <RadioButton value="other" iconSize={20}>
+             Rather Not Specify
+            </RadioButton>
+            </RadioGroup>
+
+              
+
             </div>
             <div className="text-center">
               <MDBBtn gradient="purple" rounded>Sign Up</MDBBtn>
