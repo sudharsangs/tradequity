@@ -6,9 +6,9 @@ import { MDBContainer, MDBRow, MDBCol, MDBInput, MDBBtn, MDBIcon, MDBCard, MDBCa
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap-css-only/css/bootstrap.min.css";
 import "mdbreact/dist/css/mdb.css";
-import ReactPhoneInput from 'react-phone-input-2';
-import 'react-phone-input-2/dist/style.css';
 import { RadioGroup, RadioButton, ReversedRadioButton } from 'react-radio-buttons';
+import 'react-phone-number-input/style.css'
+import PhoneInput from 'react-phone-number-input'
 
 
 export default class SignUp extends Component {
@@ -80,10 +80,11 @@ export default class SignUp extends Component {
                 success="right"
                 name="email"
               />
-             <ReactPhoneInput 
-                 defaultCountry={'in'} 
-                 value={this.state.phone}
-              />
+              <PhoneInput
+    placeholder="Phone Number"
+    value={ this.state.phone }
+    onChange={ phone => this.setState({ phone }) } />
+             
               <MDBInput
                 label="Password"
                 icon="lock"
