@@ -103,16 +103,16 @@ export default class SignUp extends Component {
                 validate
                 name="password"
               />
-              <h5><MDBBadge color="primary">Gender</MDBBadge></h5>
+              <h5><MDBBadge color="secondary">Gender</MDBBadge></h5>
               <RadioGroup onChange={ this.onChange } horizontal>
-              <RadioButton value="male" iconSize={20}>
+              <RadioButton value="male" iconSize={20} rootColor="#616C6F" pointColor="purple">
               Male
              </RadioButton>
-             <RadioButton value="female" iconSize={20}>
+             <RadioButton value="female" iconSize={20} rootColor="#616C6F" pointColor="purple">
              Female
              </RadioButton>
-             <RadioButton value="other" iconSize={20}>
-             Rather Not Specify
+             <RadioButton value="other" iconSize={20} rootColor="#616C6F" pointColor="purple">
+             Others
             </RadioButton>
             </RadioGroup>
 
