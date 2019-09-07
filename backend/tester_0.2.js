@@ -4,12 +4,16 @@
 
 //validator.validate("nishithmunda9212gmailcom");
 
-var express = require('express');
-var mysql = require('mysql');
-var SHA1 = require('sha1');
+const express = require('express');
+const mysql = require('mysql');
+const SHA1 = require('sha1');
+const cors = require('cors');
+/*const bodyparser = require('body-parser');
+const urlencodedparser = bodyparser.urlencoded({extended: false});*/
 
-var app= express();
-var connection = mysql.createConnection({
+const app= express();
+app.use(cors());
+const connection = mysql.createConnection({
 	host:'localhost',
 	user: 'boss',
 	password:'1234',
@@ -25,15 +29,13 @@ connection.connect(function(err) {
 
 });
 
-app.post('/list/add',(req,res) => {
+app.post('http://localhost:4000/signup',(req,res) => {
 //var { mail , password , DOB ,name, gender, phone} = req.query;
-  var sql=`INSERT INTO userdetail_TB ( mail , password , DOB ,name, gender, phone) VALUES('${mail}','${SHA1(password)}','${DOB}','${name}','${gender}','${phone}')`;
+  var sql=`INSERT INTO userdetail_TB ( email , password ,name, gender, phone) VALUES('${email}','${SHA1(password)}', '${name}','${gender}','${phone}')`;
     connection.query(sql,(err,result)=>{
     if(err) throw err;
     else {
-      {
         return res.send("Successfully added");
-      }
     }
   });
 })
@@ -55,5 +57,6 @@ connection.query("SELECT * FROM signup_tb",(err,result) =>{
 })
 }); */
 
+//require('./routes/html-routes')(app);
 app.listen(4000,()=>{console.log('Listening on port 4000')
 });

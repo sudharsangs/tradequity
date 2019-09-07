@@ -1,5 +1,5 @@
 module.exports = function(app){
-    app.get('/',function(req,res){
+    app.post('/signup',function(req,res){
         res.send('Hello');
     });
 };
