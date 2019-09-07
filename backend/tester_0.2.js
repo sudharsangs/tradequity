@@ -11,9 +11,9 @@ var SHA1 = require('sha1');
 var app= express();
 var connection = mysql.createConnection({
 	host:'localhost',
-	user: 'root',
-	password:'',
-	database: 'signup_db'
+	user: 'boss',
+	password:'1234',
+	database: 'tradequity'
 
 });
 
@@ -25,7 +25,7 @@ connection.connect(function(err) {
 
 });
 
-app.get('/list/add',(req,res) => {
+app.post('/list/add',(req,res) => {
 //var { mail , password , DOB ,name, gender, phone} = req.query;
   var sql=`INSERT INTO userdetail_TB ( mail , password , DOB ,name, gender, phone) VALUES('${mail}','${SHA1(password)}','${DOB}','${name}','${gender}','${phone}')`;
     connection.query(sql,(err,result)=>{

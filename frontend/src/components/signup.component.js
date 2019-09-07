@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-//import axios from 'axios';
+import axios from 'axios';
 //import './user-style.css'
 import "bootstrap/dist/css/bootstrap.min.css";
 import { MDBContainer, MDBRow, MDBCol, MDBInput, MDBBtn, MDBIcon, MDBCard, MDBCardBody, MDBBadge } from 'mdbreact';
@@ -38,8 +38,8 @@ export default class SignUp extends Component {
 
     console.log(user);
 
-    /*axios.post('http://localhost:5000/users/add', user)
-      .then(res => console.log(res.data));*/
+    axios.post('http://localhost:4000/list/add', user)
+      .then(res => console.log(res.data));
 
     this.setState({
       email: ''
@@ -55,7 +55,7 @@ export default class SignUp extends Component {
         <MDBCol md="6">
         <MDBCard>
         <MDBCardBody>
-          <form>
+          <form action="post">
             <p className="h5 text-center mb-4">Sign up</p>
             <div className="grey-text">
               <MDBInput
@@ -89,7 +89,7 @@ export default class SignUp extends Component {
                 label="Password"
                 icon="lock"
                 group
-                type="email"
+                type="password"
                 validate
                 error="wrong"
                 success="right"

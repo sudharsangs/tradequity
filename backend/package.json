@@ -1,11 +1,15 @@
 {
-	"name": "mysqlApplication",
-	"version": "1.0.0",
-	"dependencies": {
-		"email-validator": "^2.0.4",
-		"expess": "0.0.1-security",
-		"express": "^4.13.4",
-		"mysql": "^2.10.2",
-		"sha1": "^1.1.1"
-	}
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Backend",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tradequity",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mysql": "^2.17.1"
+  }
 }
