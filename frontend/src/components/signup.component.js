@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-//import './user-style.css'
 import "bootstrap/dist/css/bootstrap.min.css";
 import { MDBContainer, MDBRow, MDBCol, MDBInput, MDBBtn, MDBIcon, MDBCard, MDBCardBody, MDBBadge } from 'mdbreact';
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap-css-only/css/bootstrap.min.css";
 import "mdbreact/dist/css/mdb.css";
 import { RadioGroup, RadioButton, ReversedRadioButton } from 'react-radio-buttons';
-import 'react-phone-number-input/style.css'
-import PhoneInput from 'react-phone-number-input'
+import 'react-phone-number-input/style.css';
 
 
 export default class SignUp extends Component {
@@ -22,7 +20,7 @@ export default class SignUp extends Component {
     this.onChangePassword = this.onChangePassword.bind(this);
     this.onChangeGender = this.onChangeGender.bind(this);
     this.onChangePassword_Again=this.onChangePassword_Again.bind(this);
-    this.onClick = this.onClick.bind(this);
+    
 
 
 
@@ -88,28 +86,20 @@ export default class SignUp extends Component {
       gender: this.state.gender
     }
 
-    axios.post('http://localhost:4000/signup', user)
-      .then(res => console.log(res.data));
-      
-
-    console.log(user);
+    axios({
+      method: 'post',
+      url: 'http://localhost:4000/sign',
+      data: user
+  })
+  .then(function (response) {
+      console.log(response);
+  })
+  .catch(function (error) {
+      console.log(error);
+  });
   }
 
-  onClick() {
-    console.log('Success');
-    const user = {
-      email: this.state.email,
-      phno: this.state.phno,
-      name: this.state.name,
-      password: this.state.password,
-      gender: this.state.gender
-    }
 
-    axios.post('http://localhost:4000/signup', user)
-      .then(res => console.log(res.data));
-
-    
-  }
  
 
   render() {
@@ -210,7 +200,7 @@ export default class SignUp extends Component {
 
             </div>
             <div className="text-center">
-              <MDBBtn gradient="purple" type="submit" onClick={this.onCLick}>Sign Up</MDBBtn>
+              <MDBBtn gradient="purple" type="submit">Sign Up</MDBBtn>
             </div>
           </form>
           </MDBCardBody>

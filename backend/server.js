@@ -19,6 +19,7 @@ const cors = require('cors');
 const urlencodedparser = bodyparser.urlencoded({extended: false});*/
 
 const app= express();
+const router = express.Router();
 app.use(cors());
 const connection = mysql.createConnection({
 	host:'localhost',
@@ -32,20 +33,17 @@ connection.connect(function(err) {
   if (err)
 	console.log("Connection error");
 	else
-	console.log("Connected!");
+	console.log("Connected to DB!");
 
 });
 
-app.post('/signup',(req,res) => {
-//var { mail , password , DOB ,name, gender, phone} = req.query;
-  var sql=`INSERT INTO userdetail_TB ( email , password ,name, gender, phone) VALUES('${email}','${SHA1(password)}', '${name}','${gender}','${phone}')`;
-    connection.query(sql,(err,result)=>{
-    if(err) throw err;
-    else {
-        return res.send("Successfully added");
-    }
+
+router.post('/new', function(req, res, next) {
+  res.locals.connection.query('insert into members(name,email) values(''+req.body.name+'',''+req.body.email+'')', function (error, results, fields) {
+      if(error) throw error;
+      res.send(JSON.stringify(results));
   });
-})                                                                                       
+});                                                                                     
 
 /*app.get('/list',(req,res) =>{
 connection.query("SELECT * FROM signup_tb",(err,result) =>{
