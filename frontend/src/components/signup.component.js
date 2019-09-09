@@ -88,11 +88,11 @@ export default class SignUp extends Component {
 
     axios({
       method: 'post',
-      url: 'http://localhost:4000/sign',
+      url: 'http://localhost:4000/signup',
       data: user
   })
-  .then(function (response) {
-      console.log(response);
+  .then(function (request) {
+      console.log(request);
   })
   .catch(function (error) {
       console.log(error);

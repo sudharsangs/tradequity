@@ -38,10 +38,13 @@ connection.connect(function(err) {
 });
 
 
-router.post('/new', function(req, res, next) {
-  res.locals.connection.query('insert into members(name,email) values(''+req.body.name+'',''+req.body.email+'')', function (error, results, fields) {
-      if(error) throw error;
-      res.send(JSON.stringify(results));
+router.post('http://locacalhost:4000/signup', function(res) {
+  let sql=`INSERT INTO userdetail_TB ( email , password ,name, gender, phone) VALUES('${res.data.email}','${SHA1(res.data.password)}', '${res.data.name}','${res.data.gender}','${res.data.phno}')`;
+    connection.query(sql,(err,res)=>{
+    if(err) throw err;
+    else {
+        return res.send("Successfully added");
+    }
   });
 });                                                                                     
 
