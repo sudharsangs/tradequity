@@ -4,7 +4,7 @@ const express = require('express');
 const mysql = require('mysql');
 const SHA1 = require('sha1');
 const cors = require('cors');
-
+const bodyparser = require('body-parser');
 
 
 
@@ -21,8 +21,12 @@ const urlencodedparser = bodyparser.urlencoded({extended: false});*/
 const app= express();
 const router = express.Router();
 app.use(cors());
+app.use(bodyparser.json());
+app.use(bodyparser.urlencoded({ extended: false }));
+
 const connection = mysql.createConnection({
-	host:'localhost',
+  host:'localhost',
+  port:'3306',
 	user: 'boss',
 	password:'1234',
 	database: 'tradequity'
@@ -37,10 +41,13 @@ connection.connect(function(err) {
 
 });
 
+console.log(connection);
 
-router.post('http://locacalhost:4000/signup', function(res) {
-  let sql=`INSERT INTO userdetail_TB ( email , password ,name, gender, phone) VALUES('${res.data.email}','${SHA1(res.data.password)}', '${res.data.name}','${res.data.gender}','${res.data.phno}')`;
-    connection.query(sql,(err,res)=>{
+
+router.route('http://localhost:4000/signup').post(function(req,res) {
+  let sql="INSERT INTO `userdetail_TB`(`email`,`password`, `name`, `gender`, `phone`) VALUES ('"+req.body.email+"','"+req.body.password+"','"+req.body.name+"','"+req.body.gender+"','"+req.body.phno+"')"
+    console.log(req.body.name);
+    connection.query(sql,function(err,res){
     if(err) throw err;
     else {
         return res.send("Successfully added");
@@ -65,6 +72,6 @@ connection.query("SELECT * FROM signup_tb",(err,result) =>{
 })
 }); */
 
-require('./routes/html-routes')(app);
+module.exports = app;
 app.listen(4000,()=>{console.log('Listening on port 4000')
 });

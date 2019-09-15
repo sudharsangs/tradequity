@@ -78,7 +78,7 @@ export default class SignUp extends Component {
     e.preventDefault();
   
 
-    const user = {
+    const data = {
       email: this.state.email,
       phno: this.state.phno,
       name: this.state.name,
@@ -89,7 +89,7 @@ export default class SignUp extends Component {
     axios({
       method: 'post',
       url: 'http://localhost:4000/signup',
-      data: user
+      body: data
   })
   .then(function (request) {
       console.log(request);

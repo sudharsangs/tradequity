@@ -12,6 +12,7 @@
     "fontawesome": "^5.6.3",
     "formik": "^1.5.8",
     "googleapis": "^41.0.1",
+    "indian-stock-exchange": "^1.3.33",
     "mdbreact": "^4.18.1",
     "react": "^16.8.6",
     "react-bootstrap": "^0.32.4",
@@ -22,6 +23,7 @@
     "react-radio-buttons": "^1.2.2",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
+    "react-stockcharts": "^0.7.8",
     "react-validation": "^3.0.7",
     "yup": "^0.27.0"
   },
