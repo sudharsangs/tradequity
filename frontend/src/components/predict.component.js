@@ -17,7 +17,7 @@ export default class Predict extends Component
                     
                         <MDBDropdown>
                              <MDBDropdownToggle caret color="secondary" >
-                               Live Share Price
+                               Predict Share Price
                              </MDBDropdownToggle>
                              <MDBDropdownMenu basic >
                               <MDBDropdownItem>Maruti Suzuki</MDBDropdownItem>

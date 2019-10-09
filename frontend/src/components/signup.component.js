@@ -109,7 +109,7 @@ export default class SignUp extends Component {
         <MDBCol md="6">
         <MDBCard>
         <MDBCardBody>
-          <form method="post" onSubmit={this.onSubmit}>
+          <form method="post" onSubmit={this.onSubmit} action="http://localhost:4000/signup">
             <p className="h5 text-center mb-4">Sign up</p>
             <div className="grey-text">
               <MDBInput
