@@ -145,6 +145,8 @@ export default class SignUp extends Component {
                 icon="phone-volume"
                 group
                 validate
+                type="tel"
+                pattern="[0-9]{10}"
                 error="wrong"
                 success="right"
                 name="phno"
