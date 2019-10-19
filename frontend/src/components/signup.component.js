@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import "bootstrap/dist/css/bootstrap.min.css";
-import { MDBContainer, MDBRow, MDBCol, MDBInput, MDBBtn, MDBIcon, MDBCard, MDBCardBody, MDBBadge } from 'mdbreact';
+import { MDBContainer,MDBFormInline, MDBRow, MDBCol, MDBInput, MDBBtn, MDBIcon, MDBCard, MDBCardBody, MDBBadge } from 'mdbreact';
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap-css-only/css/bootstrap.min.css";
 import "mdbreact/dist/css/mdb.css";
-import { RadioGroup, RadioButton, ReversedRadioButton } from 'react-radio-buttons';
 import 'react-phone-number-input/style.css';
-
+//import qs from 'qs';
 
 export default class SignUp extends Component {
   constructor(props) {
@@ -18,22 +17,23 @@ export default class SignUp extends Component {
     this.onChangeName = this.onChangeName.bind(this);
     this.onChangeNumber = this.onChangeNumber.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
-    this.onChangeGender = this.onChangeGender.bind(this);
+    //this.onChangeGender = this.onChangeGender.bind(this);
     this.onChangePassword_Again=this.onChangePassword_Again.bind(this);
+    this.onClick=this.onClick.bind(this);
     
 
 
 
 
 
-    this.state = {
-      name: '',
-      email: '',
-      phno: '',
-      password: '',
-      gender: '',
-      password_again: ''
 
+    this.state = {
+      email: '',
+      password: '',
+      name: '',
+      gender: '',
+      phone: '',
+      password_again: ''
 
     }
   }
@@ -58,7 +58,7 @@ export default class SignUp extends Component {
 
   onChangeNumber(e) {
     this.setState({
-      phno: e.target.value
+      phone: e.target.value
     })
   }
 
@@ -68,48 +68,57 @@ export default class SignUp extends Component {
     })
   }
 
-  onChangeGender(e) {
+/*  onChangeGender(e) {
     this.setState({
       gender: e.target.value
     })
-  }
+  } */
+
+  
+
+  onClick = nr => () => {
+    this.setState({
+      gender: nr
+    });
+  };
 
   onSubmit(e) {
     e.preventDefault();
-  
+
 
     const data = {
       email: this.state.email,
-      phno: this.state.phno,
-      name: this.state.name,
       password: this.state.password,
-      gender: this.state.gender
+      name: this.state.name,
+      gender: this.state.gender,
+      phone: this.state.phone
+    }
+    //console.log(data);
+
+    const encodeForm = (data) => {
+      return Object.keys(data)
+          .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))
+          .join('&');
     }
 
-    axios({
-      method: 'post',
-      url: 'http://localhost:4000/signup',
-      body: data
-  })
-  .then(function (request) {
-      console.log(request);
-  })
-  .catch(function (error) {
-      console.log(error);
-  });
+    axios.post('http://localhost:4000/register', encodeForm(data), {headers: {'Accept': 'application/json'}})
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+    });
+
   }
 
-
- 
-
-  render() {
+  render(){
     return (
       <MDBContainer>
       <MDBRow>
         <MDBCol md="6">
         <MDBCard>
         <MDBCardBody>
-          <form method="post" onSubmit={this.onSubmit} action="http://localhost:4000/signup">
+          <form method="post" onSubmit={this.onSubmit} action="http://localhost:4000/register">
             <p className="h5 text-center mb-4">Sign up</p>
             <div className="grey-text">
               <MDBInput
@@ -124,8 +133,8 @@ export default class SignUp extends Component {
                 value={this.state.name}
                 onChange={this.onChangeName}
                 required
-              
-              
+
+
               />
               <MDBInput
                 label="Email"
@@ -145,17 +154,15 @@ export default class SignUp extends Component {
                 icon="phone-volume"
                 group
                 validate
-                type="tel"
-                pattern="[0-9]{10}"
                 error="wrong"
                 success="right"
-                name="phno"
-                value={this.state.phno}
+                name="phone"
+                value={this.state.phone}
                 onChange={this.onChangeNumber}
                 required
               />
-              
-             
+
+
               <MDBInput
                 label="Password"
                 icon="lock"
@@ -165,6 +172,8 @@ export default class SignUp extends Component {
                 error="wrong"
                 success="right"
                 name="password"
+                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
                 required
                 value={this.state.password}
                 onChange={this.onChangePassword}
@@ -182,23 +191,33 @@ export default class SignUp extends Component {
                 required
               />
               <h5><MDBBadge color="secondary">Gender</MDBBadge></h5>
-              <RadioGroup 
-              onChange={ this.onChangeGender } 
-              horizontal
-              value={ this.state.gender}
-              required>
-              <RadioButton value="male" iconSize={20} name="m" rootColor="#616C6F" pointColor="purple">
-              Male
-             </RadioButton>
-             <RadioButton value="female" iconSize={20} name="f" rootColor="#616C6F" pointColor="purple">
-             Female
-             </RadioButton>
-             <RadioButton value="other" iconSize={20} name="" rootColor="#616C6F" pointColor="purple">
-             Others
-            </RadioButton>
-            </RadioGroup>
+              <MDBFormInline>
+        <MDBInput
+          onClick={this.onClick('M')}
+          checked={this.state.radio === 1 ? true : false}
+          label='Male'
+          type='radio'
+          id='radio1'
+          containerClass='mr-5'
+        />
+        <MDBInput
+          onClick={this.onClick('F')}
+          checked={this.state.radio === 2 ? true : false}
+          label='Female'
+          type='radio'
+          id='radio2'
+          containerClass='mr-5'
+        />
+        <MDBInput
+          onClick={this.onClick('O')}
+          checked={this.state.radio === 3 ? true : false}
+          label='Other'
+          type='radio'
+          id='radio3'
+          containerClass='mr-5'
+        />
+      </MDBFormInline>
 
-              
 
             </div>
             <div className="text-center">

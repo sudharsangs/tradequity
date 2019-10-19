@@ -12,6 +12,7 @@ export default class LogIn extends Component {
       super(props);
   
       this.onChangeEmail = this.onChangeEmail.bind(this);
+      this.onChangePassword = this.onChangePassword.bind(this);
       this.onSubmit = this.onSubmit.bind(this);
   
       this.state = {
@@ -35,7 +36,14 @@ export default class LogIn extends Component {
         this.setState({ [event.target.name]: { value: event.target.value, valid: !!event.target.value } });
       };
     
-      
+
+
+
+    onChangePassword(e) {
+        this.setState({
+          password: e.target.value
+        })
+      }
   
     onChangeEmail(e) {
       this.setState({
@@ -46,18 +54,28 @@ export default class LogIn extends Component {
     onSubmit(e) {
       e.preventDefault();
   
-      const Login = {
-        email: this.state.email
+      const data = {
+        email: this.state.email,
+        password: this.state.password,
       }
   
-      console.log(Login);
-  
-     /* axios.post('http://localhost:5000/users/add', user)
-        .then(res => console.log(res.data));*/
-  
-      this.setState({
-        email: ''
-      })
+      //console.log(data);
+
+      const encodeForm = (data) => {
+        return Object.keys(data)
+            .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))
+            .join('&');
+      }
+       
+      axios.post('http://localhost:4000/login', encodeForm(data), {headers: {'Accept': 'application/json'}})
+          .then(function (response) {
+              console.log(response);
+          })
+          .catch(function (error) {
+              console.log(error);
+      });
+
+     
     }
 
     
@@ -69,7 +87,7 @@ export default class LogIn extends Component {
               <MDBCol md="6">
               <MDBCard>
               <MDBCardBody>
-                <form className="needs-validation">
+              <form method="post" onSubmit={this.onSubmit} action="http://localhost:4000/login">
                   <p className="h5 text-center mb-4">Log In</p>
                   <div className="grey-text">
                     <MDBInput
@@ -81,6 +99,8 @@ export default class LogIn extends Component {
                       error="wrong"
                       success="right"
                       name="email"
+                      value={this.state.email}
+                      onChange={this.onChangeEmail}
                       required
                     />
                     <MDBInput
@@ -91,12 +111,12 @@ export default class LogIn extends Component {
                       validate
                       name="password"
                       required
+                      value={this.state.password}
+                      onChange={this.onChangePassword}
                     />
                   </div>
                   <div className="text-center">
-                    <MDBBtn gradient="purple" rounded>
-                      Login
-                    </MDBBtn>
+                    <MDBBtn gradient="purple" type="submit">Login</MDBBtn>
                  </div>
                 </form>
                 </MDBCardBody>

@@ -8,6 +8,7 @@ import SignUp from "./components/signup.component";
 import LivePrice from "./components/live.component";
 import Predict from "./components/predict.component"
 
+
 function App() {
   return (
 
