@@ -6,7 +6,8 @@ import Navbar from "./components/navbar.component";
 import LogIn from "./components/login.component";
 import SignUp from "./components/signup.component";
 import LivePrice from "./components/live.component";
-import Predict from "./components/predict.component"
+import Predict from "./components/predict.component";
+import Home from "./components/hometext.component";
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
       <Router>
       <Navbar />
       <br/>
+      <Route path="/" exact component={Home} />
       <Route path="/live" exact component={LivePrice} />
       <Route path="/signup" exact component={SignUp} />   
 
