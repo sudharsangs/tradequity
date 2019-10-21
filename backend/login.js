@@ -3,6 +3,7 @@ var SHA1 = require('sha1');
 var connection = require('./config.js');
 var app= express();
 
+
 module.exports.login=function(req,res){
   var email= req.body.email;
   var password = req.body.password;
@@ -12,6 +13,8 @@ module.exports.login=function(req,res){
      console.log("error ocurred",error);
   }
   else{
+     
+      
 
           if(results.length >0)
           {
@@ -20,6 +23,7 @@ module.exports.login=function(req,res){
              if(results[0].password == encrypted)
                {
                 return res.send("Successfully Login");
+                
                }
               else
                {
