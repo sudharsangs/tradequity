@@ -5,8 +5,7 @@ import { MDBContainer,MDBFormInline, MDBRow, MDBCol, MDBInput, MDBBtn, MDBIcon, 
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap-css-only/css/bootstrap.min.css";
 import "mdbreact/dist/css/mdb.css";
-import 'react-phone-number-input/style.css';
-//import qs from 'qs';
+import swal from "sweetalert";
 
 export default class SignUp extends Component {
   constructor(props) {
@@ -101,9 +100,33 @@ export default class SignUp extends Component {
           .join('&');
     }
 
-    axios.post('http://localhost:4000/register', encodeForm(data), {headers: {'Accept': 'application/json'}})
+    axios.post('http://localhost:4000/register', encodeForm(data))
         .then(function (response) {
             console.log(response);
+            if (response.data === 200)
+            {
+            //alert("Data Added successfully.")
+            swal({
+              title: "Registration Successfull",
+              text: "          ",
+              icon: "success",
+              timer: 2000,
+              button: false
+            })
+            this.setState({ redirect: this.state.redirect === true });
+
+            }
+            else
+            {
+              //alert("Registration Fail.")
+              swal({
+                title: "Registration Fail.",
+                text: "           ",
+                icon: "error",
+                timer: 2000,
+                button: false
+              })
+            }
         })
         .catch(function (error) {
             console.log(error);
@@ -130,6 +153,7 @@ export default class SignUp extends Component {
                 error="wrong"
                 success="right"
                 name="name"
+                title="Name cannot contain numbers"
                 value={this.state.name}
                 onChange={this.onChangeName}
                 required
@@ -145,6 +169,7 @@ export default class SignUp extends Component {
                 error="wrong"
                 success="right"
                 name="email"
+                title="Please enter a valid email address"
                 value={this.state.email}
                 onChange={this.onChangeEmail}
                 required
@@ -157,6 +182,9 @@ export default class SignUp extends Component {
                 error="wrong"
                 success="right"
                 name="phone"
+                type="tel"
+                pattern="[0-9]{10}"
+                title="Please enter a valid Phone Number of 10 digits"
                 value={this.state.phone}
                 onChange={this.onChangeNumber}
                 required
@@ -186,6 +214,8 @@ export default class SignUp extends Component {
                 type="password"
                 validate
                 name="password_again"
+                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                title="Must be same as the previous field"
                 value={this.state.password_again}
                 onChange={this.onChangePassword_Again}
                 required
@@ -222,6 +252,7 @@ export default class SignUp extends Component {
             </div>
             <div className="text-center">
               <MDBBtn gradient="purple" type="submit">Sign Up</MDBBtn>
+              
             </div>
           </form>
           </MDBCardBody>

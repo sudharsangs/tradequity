@@ -7,6 +7,7 @@ import LogIn from "./components/login.component";
 import SignUp from "./components/signup.component";
 import LivePrice from "./components/live.component";
 import Home from "./components/hometext.component";
+import Manage from"./components/StocksOwned";
 
 
 
@@ -22,7 +23,7 @@ function App() {
       <Route path="/signup" exact component={SignUp} />   
 
       <Route path="/login" exact component={LogIn} />
-      <Route path="/predict" render={() => <div><p>     Please Login To View Prediction</p></div> } />
+      <Route path="/mys" render={() => <div><p>     Please Login To Manage Your Stock</p></div> } exact component={Manage} />
       </Router>
     
    

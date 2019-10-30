@@ -17,8 +17,9 @@ module.exports.register=function(req,res){
     if(err) return res.send(err);
     else
       {
-        return res.send("Successfully added");
+        return res.send('200');
       }
+
 
   });
 }

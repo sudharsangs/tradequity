@@ -4,6 +4,7 @@ import { MDBContainer, MDBRow, MDBCol, MDBInput, MDBBtn, MDBIcon, MDBCard, MDBCa
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap-css-only/css/bootstrap.min.css";
 import "mdbreact/dist/css/mdb.css";
+import swal from 'sweetalert';
 
       
     
@@ -70,6 +71,39 @@ export default class LogIn extends Component {
       axios.post('http://localhost:4000/login', encodeForm(data), {headers: {'Accept': 'application/json'}})
           .then(function (response) {
               console.log(response);
+              if (response.data === 200)
+              {
+              //alert("Successfully Login")
+              swal({
+                title: "Successfully Login!",
+                text: "     ",
+                icon: "success",
+                timer: 2000,
+                button: false
+              })
+              }
+              else if(response.data === 300)
+              {
+                // alert("Password incorrect")
+                swal({
+                  title: "Password incorrect",
+                  text: "     ",
+                  icon: "error",
+                  timer: 2000,
+                  button: false
+                })
+              }
+              else
+              {
+                // alert("Account does not exist");
+                swal({
+                  title: "Account does not exist",
+                  text: "     ",
+                  icon: "info",
+                  timer: 2000,
+                  button: false
+                })
+              }
           })
           .catch(function (error) {
               console.log(error);

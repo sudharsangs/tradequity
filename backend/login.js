@@ -18,23 +18,27 @@ module.exports.login=function(req,res){
 
           if(results.length >0)
           {
-
-
-             if(results[0].password == encrypted)
-               {
-                return res.send("Successfully Login");
-                
-               }
-              else
-               {
-                return res.send("Password incorrect");
-               }
-         }
-  else
-    {
-    return res.send("Account does not exist");
+            if(results.length >0)
+            {
+  
+  
+               if(results[0].password == encrypted)
+                 {
+                  return res.send("200");
+                 }
+                else
+                 {
+                  return res.send("300");
+                 }
+           }
+    else
+      {
+      return res.send("400");
+      }
     }
-  }
+         }
+  
+  
   });
 }
 /*app.listen(4000,()=>{console.log('Listening on port 4000')

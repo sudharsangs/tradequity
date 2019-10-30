@@ -13,7 +13,7 @@ export default class Navbar extends Component {
           <Link to="/live" className="nav-link">Live Stock Market</Link>
           </li>
           <li className="navbar-item">
-          <Link to="/predict" className="nav-link">Predict Stock Price</Link>
+          <Link to="/mys" className="nav-link">Manage Your Stock</Link>
           </li>
           <li className="navbar-item">
           <Link to="/signup" className="nav-link">Sign Up</Link>

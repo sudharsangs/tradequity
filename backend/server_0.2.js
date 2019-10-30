@@ -1,6 +1,7 @@
 var express    = require("express");
 var loginController=require('./login');
 var registerController=require('./register');
+var stockController=require('./stock');
 var bodyParser = require('body-parser');
 var app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -18,6 +19,7 @@ router.get('/', function(req, res) {
 //route to handle user registration
 app.post('/register',registerController.register);
 app.post('/login', loginController.login);
+app.post('/stock', stockController.stock);
 app.use('/api', router);
 app.listen(4000,()=>{console.log('Listening on port 4000')
 });
