@@ -11,7 +11,9 @@ module.exports.register=function(req,res){
           "name":req.body.name,
 					"gender":req.body.gender,
           "phone":req.body.phone
-				}
+        }
+        
+        module.exports.email = data.email;
 
     connection.query('INSERT INTO userdetail_tB SET ?',data,function(err,result){
     if(err) return res.send(err);
@@ -23,6 +25,8 @@ module.exports.register=function(req,res){
 
   });
 }
+
+
 
 /*app.listen(4000,()=>{console.log('Listening on port 4000')
 });*/

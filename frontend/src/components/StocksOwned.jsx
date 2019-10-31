@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import "bootstrap/dist/css/bootstrap.min.css";
-import { MDBContainer,MDBFormInline, MDBRow, MDBCol, MDBInput, MDBBtn, MDBIcon, MDBCard, MDBCardBody, MDBBadge } from 'mdbreact';
+import { MDBContainer, MDBRow, MDBCol, MDBInput, MDBBtn, MDBCard, MDBCardBody, MDBIcon } from 'mdbreact';
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap-css-only/css/bootstrap.min.css";
 import "mdbreact/dist/css/mdb.css";
+import DatePicker from 'react-date-picker';
+import swal from "sweetalert";
+
 
 
 export default class SignUp extends Component {
@@ -24,8 +27,11 @@ export default class SignUp extends Component {
     this.state = {
       company: '',
       symbol: '',
+      count: '',
       cost: '',
-      currency: ''  
+      currency: '',
+      date: '',
+      market: ''
     }
   }
 
@@ -61,9 +67,19 @@ export default class SignUp extends Component {
     })
   }
 
-  onChangeDate(e) {
+  onChangeDate = date => this.setState({ date })
+
+  onChangeCount(e) {
     this.setState({
-      currency: e.target.value
+      count: e.target.value
+    })
+  }
+ 
+
+  getPickerValue = (e) => {
+    console.log(e);
+    this.setState({
+      date: e.target.value
     })
   }
 
@@ -78,10 +94,11 @@ export default class SignUp extends Component {
     const data = {
       company: this.state.company,
       symbol: this.state.symbol,
+      count: this.state.count,
       cost: this.state.cost,
       currency: this.state.currency,
       market: this.state.market,
-      date: this.state.date
+      date: new Date()
     }
     
 
@@ -94,7 +111,32 @@ export default class SignUp extends Component {
     axios.post('http://localhost:4000/stock', encodeForm(data), {headers: {'Accept': 'application/json'}})
         .then(function (response) {
             console.log(response);
+            if (response.data === 200)
+            {
+            //alert("Data Added successfully.")
+            swal({
+              title: "Stock Added Successfully",
+              text: "          ",
+              icon: "success",
+              timer: 2000,
+              button: false
+            })
+            this.setState({ redirect: this.state.redirect === true });
+
+            }
+            else
+            {
+              //alert("Registration Fail.")
+              swal({
+                title: "Stock Adding Failed.",
+                text: "           ",
+                icon: "error",
+                timer: 2000,
+                button: false
+              })
+            }
         })
+      
         .catch(function (error) {
             console.log(error);
     });
@@ -145,6 +187,21 @@ export default class SignUp extends Component {
                   GOOGL for Alphabet Inc.
                   BAJAJ-AUTO for Bajaj Automobiles
 
+              <MDBInput
+                label="No. Of Stocks"
+                icon="sort-numeric-down"
+                group
+                type="text"
+                validate
+                error="wrong"
+                success="right"
+                name="count"
+                title="Please enter number of stocks"
+                value={this.state.count}
+                onChange={this.onChangeCount}
+                required
+              />
+
               <MDBInput 
                 label="Market"
                 icon="money-check"
@@ -191,19 +248,18 @@ export default class SignUp extends Component {
                />
 
                Eg. USD for US Dollars INR for Indian Rupees
+              
+                <br/>
+                <br/>
+               <MDBIcon icon="calendar" className="font-weight-bold"/>
+               <h2 className="font-weight-bold">Date When Stock Was Bought</h2>
+               <br/>
 
-               <MDBInput
-                 label="Date"
-                 icon="calendar-alt"
-                 type="date"
-                 error="wrong"
-                 success="right"
-                 name="date"
-                 value={this.state.date}
-                 onChange={this.onChangeDate}
-                 
-                 required
-               />
+               <DatePicker
+                onChange={this.onChangeDate}
+                value={this.state.date}
+                format="dd/MM/yyyy"
+                />
 
               
 

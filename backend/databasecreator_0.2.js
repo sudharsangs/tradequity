@@ -13,7 +13,7 @@ connection.connect(function(err) {
 	console.log("Connection error");
 	else
 	console.log("Connected!");
-  connection.query("CREATE DATABASE signup_db", function (err, result) {
+  connection.query("CREATE DATABASE tradequity", function (err, result) {
   if (err)
 	console.log("Creation Fail");
 	else

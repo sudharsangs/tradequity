@@ -1,24 +1,27 @@
 var express = require('express');
 var connection = require('./config.js');
 var app= express();
+var register = require('./register.js')
 
 module.exports.stock=function(req,res){
 
 	      var data={
-          "company":req.body.company,
+          "email": register.email,
           "symbol":req.body.symbol,
+          "count":req.body.count,
           "cost":req.body.cost,
-		  "currency":req.body.currency,
-          "market":req.body.market,
-          "date":req.body.date
+          "company":req.body.company,
+		      "currency":req.body.currency,
+          "date":req.body.date,
+          "market":req.body.market
 		}
 
     connection.query('INSERT INTO sharedetail_tB SET ?',data,function(err,result){
-    if(err) return res.send(err);
-    else
-      {
-        return res.send("Successfully added");
-      }
+      if(err) return res.send(err);
+      else
+        {
+          return res.send('200');
+        }
 
   });
 }
