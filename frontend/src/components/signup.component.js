@@ -83,6 +83,7 @@ export default class SignUp extends Component {
 
   onSubmit(e) {
     e.preventDefault();
+    
 
 
     const data = {
@@ -113,7 +114,9 @@ export default class SignUp extends Component {
               timer: 2000,
               button: false
             })
-            this.setState({ redirect: this.state.redirect === true });
+            .then(function(){
+              window.location.href = "/login"
+            })
 
             }
             else
@@ -125,6 +128,9 @@ export default class SignUp extends Component {
                 icon: "error",
                 timer: 2000,
                 button: false
+              })
+              .then(function(){
+                window.location.href = "/signup"
               })
             }
         })

@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { MDBContainer, MDBRow, MDBCol, MDBInput, MDBBtn, MDBIcon, MDBCard, MDBCardBody } from 'mdbreact';
+import { MDBContainer, MDBRow, MDBCol, MDBInput, MDBBtn, MDBCard, MDBCardBody } from 'mdbreact';
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap-css-only/css/bootstrap.min.css";
 import "mdbreact/dist/css/mdb.css";
 import swal from 'sweetalert';
-import { Link } from 'react-router-dom';
+
 
 
       
     
-export default class LogIn extends Component {
+export default class Admin extends Component {
     constructor(props) {
       super(props);
   
@@ -70,7 +70,7 @@ export default class LogIn extends Component {
             .join('&');
       }
        
-      axios.post('http://localhost:4000/login', encodeForm(data), {headers: {'Accept': 'application/json'}})
+      axios.post('http://localhost:4000/admin', encodeForm(data), {headers: {'Accept': 'application/json'}})
           .then(function (response) {
               console.log(response);
               if (response.data === 200)
@@ -123,11 +123,11 @@ export default class LogIn extends Component {
               <MDBCol md="6">
               <MDBCard>
               <MDBCardBody>
-              <form method="post" onSubmit={this.onSubmit} action="http://localhost:4000/login">
+              <form method="post" onSubmit={this.onSubmit} action="http://localhost:4000/admin">
                   <p className="h5 text-center mb-4">Log In</p>
                   <div className="grey-text">
                     <MDBInput
-                      label="Email"
+                      label="Admin Email"
                       icon="envelope"
                       group
                       type="email"
@@ -140,7 +140,7 @@ export default class LogIn extends Component {
                       required
                     />
                     <MDBInput
-                      label="Password"
+                      label="Admin Password"
                       icon="lock"
                       group
                       type="password"
@@ -152,10 +152,9 @@ export default class LogIn extends Component {
                     />
                   </div>
                   <div className="text-center">
-                    <MDBBtn gradient="purple" type="submit">Login</MDBBtn>
+                    <MDBBtn gradient="purple" type="submit">Admin Login</MDBBtn>
                  </div>
                 </form>
-                If you are an admin login <Link to="/admin">here</Link>
                 </MDBCardBody>
                 </MDBCard>
               </MDBCol>
