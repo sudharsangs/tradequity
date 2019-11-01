@@ -9,6 +9,7 @@ import LivePrice from "./components/live.component";
 import Home from "./components/hometext.component";
 import Manage from"./components/StocksOwned";
 import Admin from "./components/admin";
+//import Details from "./components/details";
 
 
 

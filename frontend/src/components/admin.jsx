@@ -20,7 +20,9 @@ export default class Admin extends Component {
   
       this.state = {
          email: '',
-         password: ''
+         password: '',
+         users: [],
+         modalIsOpen: false
       }
     }
     state = {
@@ -53,9 +55,56 @@ export default class Admin extends Component {
         email: e.target.value
       })
     }
+
+    handleEdit(event) {
+      //Edit functionality
+      event.preventDefault()
+      var data = {
+          name: this.state.name,
+          email: this.state.email,
+          id: this.state.id
+      }
+      fetch("/users/edit", {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+      }).then(function(response) {
+          if (response.status >= 400) {
+              throw new Error("Bad response from server");
+          }
+          return response.json();
+      }).then(function(data) {
+          console.log(data)
+          if (data === "success") {
+              this.setState({
+                  msg: "User has been edited."
+              });
+          }
+      }).catch(function(err) {
+          console.log(err)
+      });
+  }
+
+    openModal(user) {
+      this.setState({
+          modalIsOpen: true,
+          name: user.name,
+          email: user.email,
+          phone: user.phone
+      });
+    }
+
+    closeModal() {
+      this.setState({
+          modalIsOpen: false
+      });
+  }
   
     onSubmit(e) {
       e.preventDefault();
+      let self = this;
   
       const data = {
         email: this.state.email,
@@ -71,18 +120,23 @@ export default class Admin extends Component {
       }
        
       axios.post('http://localhost:4000/admin', encodeForm(data), {headers: {'Accept': 'application/json'}})
-          .then(function (response) {
-              console.log(response);
-              if (response.data === 200)
-              {
-              //alert("Successfully Login")
+          .then(function (response)  {
+              self.setState({
+                users: response.data.reverse()
+              })
+              if (response.data === 400)
+              {              
               swal({
-                title: "Successfully Login!",
+                title: "Account does not exist",
                 text: "     ",
-                icon: "success",
+                icon: "info",
                 timer: 2000,
                 button: false
               })
+              .then(function(){
+                window.location.href = "/details"
+              })
+  
               }
               else if(response.data === 300)
               {
@@ -99,14 +153,16 @@ export default class Admin extends Component {
               {
                 // alert("Account does not exist");
                 swal({
-                  title: "Account does not exist",
+                  title: "Successfully Login!",
                   text: "     ",
-                  icon: "info",
+                  icon: "success",
                   timer: 2000,
                   button: false
+                  
                 })
               }
           })
+          
           .catch(function (error) {
               console.log(error);
       });
@@ -118,6 +174,7 @@ export default class Admin extends Component {
 
     render(){
         return (
+          <div>
           <MDBContainer>
             <MDBRow>
               <MDBCol md="6">
@@ -160,6 +217,32 @@ export default class Admin extends Component {
               </MDBCol>
             </MDBRow>
           </MDBContainer>
+          <div className="container"> 
+          <div className="panel panel-default p50 uth-panel">
+              <table className="table table-hover">
+                  <thead>
+                      <tr>
+                          <th>User Name</th>
+                          <th>User email</th>
+                          <th>Phone number</th>
+                          <th>Action</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                  {this.state.users.map(id =>
+                      <tr key={id}>
+                      <td>{id.email} </td>
+                      <td>{id.name}</td>
+                      <td>{id.phone}</td>
+                      <td><a onClick={() => this.openModal(id)}>Edit</a>|<a>Delete</a></td>
+                      </tr>
+                  )}
+                  </tbody>
+              </table>
+          </div>
+      </div>
+      </div>
+          
           
           
         );
