@@ -1,12 +1,12 @@
 var express = require('express');
 var connection = require('./config.js');
 var app= express();
-var register = require('./register.js')
+var login = require('./login.js')
 
 module.exports.stock=function(req,res){
 
 	      var data={
-          "email": register.email,
+          "mail": login.email,
           "symbol":req.body.symbol,
           "count":req.body.count,
           "cost":req.body.cost,
@@ -20,7 +20,14 @@ module.exports.stock=function(req,res){
       if(err) return res.send(err);
       else
         {
-          return res.send('200');
+          connection.query('SELECT * FROM sharedetail_tB WHERE mail = ?',[login.email], function (error, results, fields) {
+            if(err) return err;
+            else {
+              return res.status(200).send(JSON.stringify(result));
+            }
+                
+          });
+
         }
 
   });

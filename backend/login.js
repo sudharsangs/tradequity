@@ -6,6 +6,7 @@ var app= express();
 
 module.exports.login=function(req,res){
   var email= req.body.email;
+  module.exports.email = email;
   var password = req.body.password;
   var encrypted = SHA1(password);
   connection.query('SELECT * FROM userdetail_tB WHERE email = ?',[email], function (error, results, fields) {

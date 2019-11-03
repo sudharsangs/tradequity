@@ -83,6 +83,9 @@ export default class LogIn extends Component {
                 timer: 2000,
                 button: false
               })
+              .then(function(){
+                window.location.href = "/mys"
+              })
               }
               else if(response.data === 300)
               {
@@ -107,6 +110,7 @@ export default class LogIn extends Component {
                 })
               }
           })
+          
           .catch(function (error) {
               console.log(error);
       });

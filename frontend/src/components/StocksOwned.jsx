@@ -10,18 +10,19 @@ import swal from "sweetalert";
 
 
 
-export default class SignUp extends Component {
+export default class Manage extends Component {
   constructor(props) {
     super(props);
 
     this.onChangeCompany = this.onChangeCompany.bind(this);
     this.onChangeSymbol = this.onChangeSymbol.bind(this);
     this.onChangeCost = this.onChangeCost.bind(this);
+    this.onChangeCount = this.onChangeCount.bind(this);
+    this.onChangeCurrency = this.onChangeCurrency.bind(this);
+    this.onChangeDate = this.onChangeDate.bind(this);
+    this.onChangeMarket = this.onChangeMarket.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
     
-
-
-
-
 
 
     this.state = {
@@ -30,8 +31,10 @@ export default class SignUp extends Component {
       count: '',
       cost: '',
       currency: '',
-      date: '',
-      market: ''
+      date: new Date(),
+      market: '',
+      details: [],
+      modalIsOpen: false
     }
   }
 
@@ -83,12 +86,28 @@ export default class SignUp extends Component {
     })
   }
 
+  openModal(user) {
+    this.setState({
+        modalIsOpen: true,
+        name: user.name,
+        email: user.email,
+        phone: user.phone
+    });
+  }
+
+  closeModal() {
+    this.setState({
+        modalIsOpen: false
+    });
+}
+
   
 
   
 
   onSubmit(e) {
     e.preventDefault();
+    let self=this;
 
 
     const data = {
@@ -98,7 +117,7 @@ export default class SignUp extends Component {
       cost: this.state.cost,
       currency: this.state.currency,
       market: this.state.market,
-      date: new Date()
+      date: this.state.date
     }
     
 
@@ -108,9 +127,8 @@ export default class SignUp extends Component {
           .join('&');
     }
 
-    axios.post('http://localhost:4000/stock', encodeForm(data), {headers: {'Accept': 'application/json'}})
+    axios.post('http://localhost:4000/stock', encodeForm(data))
         .then(function (response) {
-            console.log(response);
             if (response.data === 200)
             {
             //alert("Data Added successfully.")
@@ -121,7 +139,12 @@ export default class SignUp extends Component {
               timer: 2000,
               button: false
             })
-            this.setState({ redirect: this.state.redirect === true });
+            .then(function(response){
+              self.setState({
+                details: response.data.reverse()
+              })
+            })
+            
 
             }
             else
@@ -136,15 +159,18 @@ export default class SignUp extends Component {
               })
             }
         })
-      
+        
         .catch(function (error) {
             console.log(error);
     });
+
+   
 
   }
 
   render(){
     return (
+      <div>
       <MDBContainer>
       <MDBRow>
         <MDBCol md="6">
@@ -220,7 +246,7 @@ export default class SignUp extends Component {
                 label="Price When stock was bought"
                 icon="money-bill-wave"
                 type="text"
-                pattern="[0-9]"
+                pattern="[0-9]{1,}"
                 title="Cost cannot be in alphabets"
                 validate
                 error="wrong"
@@ -276,6 +302,40 @@ export default class SignUp extends Component {
         </MDBCol>
       </MDBRow>
     </MDBContainer>
+
+    <div className="container"> 
+          <div className="panel panel-default p50 uth-panel">
+              <table className="table table-hover">
+                  <thead>
+                      <tr>
+                          <th>Company</th>
+                          <th>Symbol</th>
+                          <th>No. Of Stocks</th>
+                          <th>Currency</th>
+                          <th>Cost</th>
+                          <th>Date</th>
+                          <th>Market</th>
+                          <th>Action</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                  {this.state.details.map(id =>
+                      <tr key={id}>
+                      <td>{id.company} </td>
+                      <td>{id.symbol}</td>
+                      <td>{id.count}</td>
+                      <td>{id.currency}</td>
+                      <td>{id.cost}</td>
+                      <td>{id.date}</td>
+                      <td>{id.market}</td>
+                      <td><a onClick={() => this.openModal(id)}>Edit</a>|<a>Delete</a></td>
+                      </tr>
+                  )}
+                  </tbody>
+              </table>
+          </div>
+      </div>
+      </div>
   );
 }
 }

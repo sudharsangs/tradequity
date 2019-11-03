@@ -225,16 +225,15 @@ export default class Admin extends Component {
                           <th>User Name</th>
                           <th>User email</th>
                           <th>Phone number</th>
-                          <th>Action</th>
                       </tr>
                   </thead>
                   <tbody>
                   {this.state.users.map(id =>
                       <tr key={id}>
-                      <td>{id.email} </td>
-                      <td>{id.name}</td>
+                      <td>{id.name} </td>
+                      <td>{id.email}</td>
                       <td>{id.phone}</td>
-                      <td><a onClick={() => this.openModal(id)}>Edit</a>|<a>Delete</a></td>
+                      
                       </tr>
                   )}
                   </tbody>

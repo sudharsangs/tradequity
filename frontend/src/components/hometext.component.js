@@ -1,4 +1,6 @@
 import React,{Component} from 'react';
+import { MDBContainer,MDBFormInline, MDBRow, MDBCol, MDBInput, MDBBtn, MDBIcon, MDBCard, MDBCardBody, MDBBadge } from 'mdbreact';
+
 
 class Home extends Component 
 {
