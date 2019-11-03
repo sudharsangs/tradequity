@@ -20,13 +20,13 @@ module.exports.stock=function(req,res){
       if(err) return res.send(err);
       else
         {
-          connection.query('SELECT * FROM sharedetail_tB WHERE mail = ?',[login.mail], function (error, results, fields) {
+         // connection.query('SELECT * FROM sharedetail_tB WHERE mail = ?',[login.mail], function (error, results, fields) {
             if(err) res.send(err);
             else {
-              return res.status(200).send(JSON.stringify(result));
+              return res.status(200);
             }
                 
-          });
+          //});
 
         }
 
