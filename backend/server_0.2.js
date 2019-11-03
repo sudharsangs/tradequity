@@ -5,6 +5,10 @@ var stockController=require('./stock');
 var adminController=require('./admin')
 var bodyParser = require('body-parser');
 var app = express();
+var redisStore = require('connect-redis')(session);
+var session = require('express-session');
+var redis = require('redis');
+var client  = redis.createClient();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(function(req, res, next) {
@@ -12,6 +16,12 @@ app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
+
+app.use(session({
+	secret: 'secret',
+	resave: true,
+	saveUninitialized: true
+}));
 var router = express.Router();
 // test route
 router.get('/', function(req, res) {

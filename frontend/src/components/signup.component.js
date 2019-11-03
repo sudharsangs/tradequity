@@ -109,9 +109,9 @@ export default class SignUp extends Component {
               timer: 2000,
               button: false
             })
-            /*.then(function(){
+            .then(function(){
               window.location.href = "/login"
-            })*/
+            })
 
             }
             else

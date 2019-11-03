@@ -1,13 +1,18 @@
 var express = require('express');
 var SHA1 = require('sha1');
 var connection = require('./config.js');
-var session = require('express-session');
 var app= express();
 
 
+app.use(bodyParser.urlencoded({extended : true}));
+app.use(bodyParser.json());
+
+
+
 module.exports.login=function(req,res){
-  var email= req.body.email;
-  module.exports.email = email;
+  sess=req.session;
+  var email = req.body.email;
+  sess.email;
   var password = req.body.password;
   var encrypted = SHA1(password);
   connection.query('SELECT * FROM userdetail_tB WHERE email = ?',[email], function (error, results, fields) {
@@ -26,6 +31,7 @@ module.exports.login=function(req,res){
   
                if(results[0].password == encrypted)
                  {
+                 // req.session.email = req.body.email;
                   return res.send("200");
                  }
                 else
