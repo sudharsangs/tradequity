@@ -17,7 +17,6 @@ export default class SignUp extends Component {
     this.onChangeNumber = this.onChangeNumber.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
     //this.onChangeGender = this.onChangeGender.bind(this);
-    this.onChangePassword_Again=this.onChangePassword_Again.bind(this);
     this.onClick=this.onClick.bind(this);
     
 
@@ -37,11 +36,7 @@ export default class SignUp extends Component {
     }
   }
 
-  onChangePassword_Again(e){
-    this.setState({
-      password_again: e.target.value
-    })
-  }
+
 
   onChangeEmail(e) {
     this.setState({
@@ -213,19 +208,7 @@ export default class SignUp extends Component {
                 onChange={this.onChangePassword}
 
               />
-              <MDBInput
-                label="Confirm Password"
-                icon="exclamation-triangle"
-                group
-                type="password"
-                validate
-                name="password_again"
-                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                title="Must be same as the previous field"
-                value={this.state.password_again}
-                onChange={this.onChangePassword_Again}
-                required
-              />
+
               <h5><MDBBadge color="secondary">Gender</MDBBadge></h5>
               <MDBFormInline>
         <MDBInput

@@ -1,6 +1,7 @@
 var express = require('express');
 var SHA1 = require('sha1');
 var connection = require('./config.js');
+var session = require('express-session');
 var app= express();
 
 
