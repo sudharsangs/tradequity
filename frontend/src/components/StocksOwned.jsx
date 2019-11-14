@@ -286,6 +286,7 @@ export default class Manage extends Component {
                <DatePicker
                 onChange={this.onChangeDate}
                 value={this.state.date}
+                maxDate={new Date()}
                 format="dd/MM/yyyy"
                 />
 
