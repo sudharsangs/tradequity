@@ -23,6 +23,7 @@ export default class Manage extends Component {
     this.onChangeMarket = this.onChangeMarket.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     
+    
 
 
     this.state = {
@@ -119,7 +120,7 @@ export default class Manage extends Component {
       market: this.state.market,
       date: this.state.date
     }
-    
+   
 
     const encodeForm = (data) => {
       return Object.keys(data)
@@ -167,6 +168,7 @@ export default class Manage extends Component {
    
 
   }
+
 
   render(){
     return (

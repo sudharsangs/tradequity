@@ -85,6 +85,7 @@ export default class LogIn extends Component {
               })
               .then(function(){
                 window.location.href = "/mys"
+                sessionStorage.setItem('usertoken',response.data)
               })
               }
               else if(response.data === 300)

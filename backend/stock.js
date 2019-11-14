@@ -1,13 +1,28 @@
 var express = require('express');
 var connection = require('./config.js');
 var app= express();
-var login = require('./login.js');
 var session = require('express-session');
+var mysql = require('mysql');
+
+var sess;
+
+var share_connect = mysql.createConnection({
+	host:'localhost',
+	user:'root',
+	password:'1234',
+	database: 'sharedetails'
+});
+
+app.use(session({
+	secret: 'secret',
+	resave: true,
+	saveUninitialized: true
+}));
 
 module.exports.stock=function(req,res){
+       sess = req.session;
 
 	      var data={
-          "mail": login.email,
           "symbol":req.body.symbol,
           "count":req.body.count,
           "cost":req.body.cost,
@@ -17,7 +32,7 @@ module.exports.stock=function(req,res){
           "market":req.body.market
     }
     
-    var sql = `SELECT uid FROM userdetail_tB WHERER email=${req.session.email}`;
+    var sql = `SELECT uid FROM userdetail_tB WHERE email=${sess.email}`;
     var uid;
     connection.query(sql,function(err, rows){
       if(err) {
@@ -32,7 +47,7 @@ module.exports.stock=function(req,res){
       console.log(someVar);
     }
 
-    connection.query(`INSERT INTO user${uid} SET ?`,data,function(err,result){
+    share_connect.query(`INSERT INTO user${uid} SET ?`,data,function(err,result){
       if(err) console.log(err);
       else
         {

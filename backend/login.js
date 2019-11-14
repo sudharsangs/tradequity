@@ -2,17 +2,20 @@ var express = require('express');
 var SHA1 = require('sha1');
 var connection = require('./config.js');
 var app= express();
+var session = require('express-session');
+var sess;
 
-
-app.use(bodyParser.urlencoded({extended : true}));
-app.use(bodyParser.json());
-
+app.use(session({
+	secret: 'secret',
+	resave: true,
+	saveUninitialized: true
+}));
 
 
 module.exports.login=function(req,res){
   sess=req.session;
   var email = req.body.email;
-  sess.email;
+  sess.email = req.body.email;
   var password = req.body.password;
   var encrypted = SHA1(password);
   connection.query('SELECT * FROM userdetail_tB WHERE email = ?',[email], function (error, results, fields) {
