@@ -42,14 +42,7 @@ app.use(session({
 app.use(cookieParser("secretSign#143_!223"));
 
 
-function getAllActiveSessions() {
-  return new Promise((resolve, reject) => {
-      redisStore.all(function(err, sessions) {
-          if(err) reject(err);
-          else resolve(sessions);
-      });
-  });
-}
+
 
 
 var router = express.Router();
@@ -99,6 +92,7 @@ else
 app.post('/login',function(req,res){
     
     var email = req.body.email;
+    client.set('email',req.body.email);
     req.session.email=req.body.email;
     var password = req.body.password;
     var encrypted = SHA1(password);
@@ -136,10 +130,36 @@ app.post('/login',function(req,res){
     
     });
   });
-app.post('/stock',async function(req,res){
- 
-       const sessions = await getAllActiveSessions();
-       console.log(req.session.email);
+  global.loginEmail = null;
+  global.uid = null; 
+  client.get('email',function(err,reply){
+    if(err) throw err;
+    console.log(reply);
+    passVal(reply);
+  })
+  function passVal(x){
+    loginEmail = x;
+    console.log(x);
+    console.log(loginEmail);
+  }
+var sql = `SELECT uid FROM userdetail_tB WHERE email="${loginEmail}"`;
+  function setValue(value) {
+    uid = value;
+    console.log(value);
+    console.log(uid);
+  }
+
+connection.query(sql,function(err, rows){
+  if(err) {
+    throw err;
+  } else {
+    console.log(rows);
+    setValue(rows);
+  }
+});
+      
+app.post('/stock',function(req,res){
+  
        var data={
        "symbol":req.body.symbol,
        "count":req.body.count,
@@ -148,22 +168,9 @@ app.post('/stock',async function(req,res){
            "currency":req.body.currency,
        "date":req.body.date,
        "market":req.body.market
- }
- 
- var sql = `SELECT uid FROM userdetail_tB WHERE email=${sessions.email}`;
- var uid;
- connection.query(sql,function(err, rows){
-   if(err) {
-     throw err;
-   } else {
-     setValue(rows);
-   }
- });
- 
- function setValue(value) {
-   uid = value;
-   console.log(someVar);
- }
+       }
+
+       console.log(uid);
 
  share_connect.query(`INSERT INTO user${uid} SET ?`,data,function(err,result){
    if(err) console.log(err);
