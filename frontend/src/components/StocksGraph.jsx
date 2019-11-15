@@ -1,11 +1,10 @@
 import React from 'react'
 import {Line} from 'react-chartjs-2';
-//import * as zoom from 'chartjs-plugin-zoom';
 import { chartJsConfig, chartColors, chartDataset } from './chartConfig';
 
 class StocksGraph extends React.Component {
 
-  // too big a function?
+  
   updateChart = () => {
     let chart = this.refs.chart.chartInstance;
 

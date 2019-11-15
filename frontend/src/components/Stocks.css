@@ -50,10 +50,13 @@ td.updated_at{
 
 .up-arrow{
   color: green;
+  background: #e2e2e2;
+
 }
 
 .down-arrow{
   color: red;
+  background: #e2e2e2;
 }
 .unsafe_script_warning{
   margin-bottom: 20px;

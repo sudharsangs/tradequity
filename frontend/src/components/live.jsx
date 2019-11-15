@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './App.css';
+import './Stocks.css';
 import Dashboard from './Dashboard'
 import UnsafeScriptsWarning from "./UnsafeScriptsWarning";
 

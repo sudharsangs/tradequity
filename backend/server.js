@@ -4,7 +4,11 @@ var connection = require('./config');
 var SHA1 = require('sha1');
 var app = express();
 var mysql = require('mysql');
+var cookieParser = require('cookie-parser');
 var session = require('express-session');
+var redis = require('redis');
+var redisStore = require('connect-redis')(session);
+var client  = redis.createClient();
 var share_connect = mysql.createConnection({
 	host:'localhost',
 	user:'root',
@@ -28,12 +32,26 @@ app.use(function(req, res, next) {
     next();
 });
 
-
 app.use(session({
-	secret: 'secret',
-	resave: true,
-	saveUninitialized: true
+  secret: 'ssshhhhh',
+  // create new redis store.
+  store: new redisStore({ host: 'localhost', port: 6379, client: client,ttl : 260}),
+  saveUninitialized: false,
+  resave: false
 }));
+app.use(cookieParser("secretSign#143_!223"));
+
+
+function getAllActiveSessions() {
+  return new Promise((resolve, reject) => {
+      redisStore.all(function(err, sessions) {
+          if(err) reject(err);
+          else resolve(sessions);
+      });
+  });
+}
+
+
 var router = express.Router();
 // test route
 router.get('/', function(req, res) {
@@ -41,8 +59,10 @@ router.get('/', function(req, res) {
 
 
 });
+
 //route to handle user registration
 app.post('/register',function(req,res){
+ 
 
     var data={
     "email":req.body.email,
@@ -77,12 +97,13 @@ else
 });
 
 app.post('/login',function(req,res){
-    sess=req.session;
+    
     var email = req.body.email;
-    sess.email = req.body.email;
+    req.session.email=req.body.email;
     var password = req.body.password;
     var encrypted = SHA1(password);
     connection.query('SELECT * FROM userdetail_tB WHERE email = ?',[email], function (error, results, fields) {
+      
     if (error) {
        console.log("error ocurred",error);
     }
@@ -92,33 +113,33 @@ app.post('/login',function(req,res){
   
             if(results.length >0)
             {
-              if(results.length >0)
-              {
-    
+              
+              
     
                  if(results[0].password == encrypted)
                    {
-                   // req.session.email = req.body.email;
-                    return res.send("200");
+                    
+                    return res.send("200").end('done');
                    }
                   else
                    {
                     return res.send("300");
                    }
-             }
+                  }
       else
         {
         return res.send("400");
         }
       }
-           }
+           
     
     
     });
   });
-app.post('/stock',function(req,res){
-    sess = req.session;
-
+app.post('/stock',async function(req,res){
+ 
+       const sessions = await getAllActiveSessions();
+       console.log(req.session.email);
        var data={
        "symbol":req.body.symbol,
        "count":req.body.count,
@@ -129,7 +150,7 @@ app.post('/stock',function(req,res){
        "market":req.body.market
  }
  
- var sql = `SELECT uid FROM userdetail_tB WHERE email=${sess.email}`;
+ var sql = `SELECT uid FROM userdetail_tB WHERE email=${sessions.email}`;
  var uid;
  connection.query(sql,function(err, rows){
    if(err) {
@@ -157,6 +178,7 @@ app.post('/stock',function(req,res){
        //});
 
      }
+    
 
 });
 });
