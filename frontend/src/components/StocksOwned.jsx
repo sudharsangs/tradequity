@@ -128,7 +128,7 @@ export default class Manage extends Component {
           .join('&');
     }
 
-    axios.post('http://localhost:4000/stock', encodeForm(data))
+    axios.post('http://localhost:4000/stocks', encodeForm(data))
         .then(function (response) {
             if (response.data === 200)
             {

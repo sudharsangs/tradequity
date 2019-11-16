@@ -73,7 +73,7 @@ if(err) return res.send(err);
 else
 { 
   
-  var create = `CREATE TABLE user${uid}(sno TINYINT PRIMARY KEY AUTO_INCREMENT, company VARCHAR(50), symbol VARCHAR(25),count INT(100) ,cost INT(100), currency VARCHAR(20),date DATE,market varchar(25))`;
+  var create = `CREATE TABLE user${uid}(sno TINYINT PRIMARY KEY AUTO_INCREMENT, company VARCHAR(50), symbol VARCHAR(25),count INT(100) ,cost INT(100), currency VARCHAR(20),date VARCHAR(250),market varchar(25))`;
 
  share_connect.query(create,function(error){
     if(error){
@@ -130,35 +130,37 @@ app.post('/login',function(req,res){
     
     });
   });
-  global.loginEmail = null;
-  global.uid = null; 
+  global.loginEmail;
+  var uid; 
   client.get('email',function(err,reply){
     if(err) throw err;
     console.log(reply);
     passVal(reply);
   })
-  function passVal(x){
-    loginEmail = x;
-    console.log(x);
-    console.log(loginEmail);
-  }
-var sql = `SELECT uid FROM userdetail_tB WHERE email="${loginEmail}"`;
-  function setValue(value) {
-    uid = value;
-    console.log(value);
-    console.log(uid);
-  }
 
+  function passVal(x){
+    global.loginEmail = x;
+    console.log(x);
+    console.log(global.loginEmail);
+  
+
+  
+  function setValue(value) {
+    uid = value.uid;
+    console.log(value.uid);
+    console.log((JSON.parse(JSON.stringify(uid))));
+  }
+var sql = `SELECT uid FROM userdetail_tB WHERE email="${global.loginEmail}"`;
 connection.query(sql,function(err, rows){
   if(err) {
     throw err;
   } else {
     console.log(rows);
-    setValue(rows);
+    setValue(rows[0]);
   }
 });
       
-app.post('/stock',function(req,res){
+app.post('/stocks',function(req,res){
   
        var data={
        "symbol":req.body.symbol,
@@ -186,9 +188,10 @@ app.post('/stock',function(req,res){
 
      }
     
-
+    
 });
 });
+  }
 app.post('/admin',function(req,res){
     var email= req.body.email;
     var password = req.body.password;
@@ -207,6 +210,7 @@ app.post('/admin',function(req,res){
                  {
                   connection.query('SELECT * FROM userdetail_tB ',function (err, result, field){
                   if(err) throw err;
+                  console.log(result);
                   return res.status(200).send(JSON.stringify(result));
                   });
                  }
