@@ -77,7 +77,7 @@ export default class LogIn extends Component {
               {
               //alert("Successfully Login")
               swal({
-                title: "Successfully Login!",
+                title: "Login Successfull!",
                 text: "     ",
                 icon: "success",
                 timer: 2000,

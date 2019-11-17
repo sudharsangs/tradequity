@@ -132,7 +132,6 @@ export default class Manage extends Component {
         .then(function (response) {
             if (response.data === 200)
             {
-            //alert("Data Added successfully.")
             swal({
               title: "Stock Added Successfully",
               text: "          ",
@@ -150,7 +149,6 @@ export default class Manage extends Component {
             }
             else
             {
-              //alert("Registration Fail.")
               swal({
                 title: "Stock Adding Failed.",
                 text: "           ",

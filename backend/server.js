@@ -167,7 +167,7 @@ app.post('/stocks',function(req,res){
        "count":req.body.count,
        "cost":req.body.cost,
        "company":req.body.company,
-           "currency":req.body.currency,
+       "currency":req.body.currency,
        "date":req.body.date,
        "market":req.body.market
        }
@@ -181,7 +181,11 @@ app.post('/stocks',function(req,res){
       // connection.query('SELECT * FROM sharedetail_tB WHERE mail = ?',[login.mail], function (error, results, fields) {
          if(err) res.send(err);
          else {
-           return res.status(200);
+          share_connect.query(`SELECT * FROM user${uid}`,function (err, result, field){
+            if(err) throw err;          
+            console.log(result);
+            return res.status(200).send(JSON.stringify(result));
+            });
          }
              
        //});

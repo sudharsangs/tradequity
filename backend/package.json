@@ -1,6 +1,10 @@
 {
-	"name": "mysqlApplication",
+	"name": "tradequity-backend",
 	"version": "1.0.0",
+	"scripts": {
+		"start": "nodemon server.js",
+		"client": "cd ../frontend && npm start"
+	  },
 	"dependencies": {
 		"connect-redis": "^4.0.3",
 		"cookie-parser": "^1.4.4",
