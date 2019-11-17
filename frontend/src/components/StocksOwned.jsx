@@ -131,26 +131,47 @@ handleEdit(event) {
       date: this.state.date,
       market: this.state.market,
   }
-  fetch("/stocks/edit", {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-  }).then(function(response) {
-      if (response.status >= 400) {
-          throw new Error("Bad response from server");
-      }
-      return response.json();
-  }).then(function(data) {
-      console.log(data)
-      if (data === "success") {
-          this.setState({
-              msg: "User has been edited."
-          });
-      }
-  }).catch(function(err) {
-      console.log(err)
+  
+  const encodeForm = (data) => {
+    return Object.keys(data)
+        .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))
+        .join('&');
+  }
+
+  axios.post('http://localhost:4000/stocks/edit', encodeForm(data))
+        .then(function(response){
+          self.setState({
+            details: response.data.reverse()
+          })
+          .then(function (response) {
+          if (response.data === 300)
+          {
+          swal({
+            title: "Stock Adding Failed",
+            text: "          ",
+            icon: "error",
+            timer: 2000,
+            button: false
+          })
+          
+
+          }
+          else
+          {
+            swal({
+              title: "Stock Added Successfully.",
+              text: "           ",
+              icon: "success",
+              timer: 2000,
+              button: false
+            })
+            
+          }
+      })
+    })
+      
+      .catch(function (error) {
+          console.log(error);
   });
 }
   
@@ -158,27 +179,46 @@ deleteMember(member){
   var data = {
       id: member.sno
   }
-  fetch("/stocks/delete", {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(data)
-  }).then(function(response) {
-      if (response.status >= 400) {
-        throw new Error("Bad response from server");
-      }
-      return response.json();
-  }).then(function(data) {
-      if(data === "success"){
-        swal({
-          title: "Stock Deleted Successfully",
-          text: "           ",
-          icon: "success",
-          timer: 2000,
-          button: false
-        })
-      }
-  }).catch(function(err) {
-      console.log(err)
+  const encodeForm = (data) => {
+    return Object.keys(data)
+        .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))
+        .join('&');
+  }
+
+  axios.post('http://localhost:4000/stocks/delete', encodeForm(data))
+        .then(function(response){
+          self.setState({
+            details: response.data.reverse()
+          })
+          .then(function (response) {
+          if (response.data === 300)
+          {
+          swal({
+            title: "Stock Adding Failed",
+            text: "          ",
+            icon: "error",
+            timer: 2000,
+            button: false
+          })
+          
+
+          }
+          else
+          {
+            swal({
+              title: "Stock Added Successfully.",
+              text: "           ",
+              icon: "success",
+              timer: 2000,
+              button: false
+            })
+            
+          }
+      })
+    })
+      
+      .catch(function (error) {
+          console.log(error);
   });
 }
 
@@ -387,7 +427,6 @@ deleteMember(member){
               <table className="table table-hover">
                   <thead>
                       <tr>
-                          <th>Serial No.</th>
                           <th>Company</th>
                           <th>Symbol</th>
                           <th>No. Of Stocks</th>
@@ -401,7 +440,6 @@ deleteMember(member){
                   <tbody>
                   {this.state.details.map(id =>
                       <tr key={id}>
-                      <td>{id.sno}</td>
                       <td>{id.company} </td>
                       <td>{id.symbol}</td>
                       <td>{id.count}</td>

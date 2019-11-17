@@ -152,8 +152,8 @@ export default class SignUp extends Component {
                 error="wrong"
                 success="right"
                 name="name"
-                pattern="[a-z][A-Z]{3,}"
-                title="Name cannot contain numbers"
+                pattern="[A-Za-z]{3,}"
+                title="Name cannot contain numbers and minimum of 3 characters"
                 value={this.state.name}
                 onChange={this.onChangeName}
                 required
