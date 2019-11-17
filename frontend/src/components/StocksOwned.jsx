@@ -7,6 +7,8 @@ import "bootstrap-css-only/css/bootstrap.min.css";
 import "mdbreact/dist/css/mdb.css";
 import DatePicker from 'react-date-picker';
 import swal from "sweetalert";
+import Modal from "react-modal";
+import Validation from 'react-validation';
 
 
 
@@ -22,6 +24,10 @@ export default class Manage extends Component {
     this.onChangeDate = this.onChangeDate.bind(this);
     this.onChangeMarket = this.onChangeMarket.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+    this.logChange = this.logChange.bind(this); 
+    this.handleEdit = this.handleEdit.bind(this);
     
     
 
@@ -90,9 +96,14 @@ export default class Manage extends Component {
   openModal(user) {
     this.setState({
         modalIsOpen: true,
-        name: user.name,
-        email: user.email,
-        phone: user.phone
+        company: user.company,
+        symbol: user.symbol,
+        count: user.count,
+        cost: user.cost,
+        currency: user.currency,
+        date: user.date,
+        market: user.market,
+        
     });
   }
 
@@ -102,14 +113,80 @@ export default class Manage extends Component {
     });
 }
 
+logChange(e) {
+  this.setState({
+      [e.target.name]: e.target.value 
+  });
+}
+
+handleEdit(event) {
+  //Edit functionality
+  event.preventDefault()
+  var data = {
+      company: this.state.company,
+      symbol: this.state.symbol,
+      count: this.state.count,
+      cost: this.state.count,
+      currency: this.state.currency,
+      date: this.state.date,
+      market: this.state.market,
+  }
+  fetch("/stocks/edit", {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+  }).then(function(response) {
+      if (response.status >= 400) {
+          throw new Error("Bad response from server");
+      }
+      return response.json();
+  }).then(function(data) {
+      console.log(data)
+      if (data === "success") {
+          this.setState({
+              msg: "User has been edited."
+          });
+      }
+  }).catch(function(err) {
+      console.log(err)
+  });
+}
   
+deleteMember(member){
+  var data = {
+      id: member.sno
+  }
+  fetch("/stocks/delete", {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(data)
+  }).then(function(response) {
+      if (response.status >= 400) {
+        throw new Error("Bad response from server");
+      }
+      return response.json();
+  }).then(function(data) {
+      if(data === "success"){
+        swal({
+          title: "Stock Deleted Successfully",
+          text: "           ",
+          icon: "success",
+          timer: 2000,
+          button: false
+        })
+      }
+  }).catch(function(err) {
+      console.log(err)
+  });
+}
 
   
 
   onSubmit(e) {
     e.preventDefault();
     let self=this;
-
 
     const data = {
       company: this.state.company,
@@ -129,20 +206,19 @@ export default class Manage extends Component {
     }
 
     axios.post('http://localhost:4000/stocks', encodeForm(data))
-        .then(function (response) {
-            if (response.data === 200)
+          .then(function(response){
+            self.setState({
+              details: response.data.reverse()
+            })
+            .then(function (response) {
+            if (response.data === 300)
             {
             swal({
-              title: "Stock Added Successfully",
+              title: "Stock Adding Failed",
               text: "          ",
-              icon: "success",
+              icon: "error",
               timer: 2000,
               button: false
-            })
-            .then(function(response){
-              self.setState({
-                details: response.data.reverse()
-              })
             })
             
 
@@ -150,14 +226,16 @@ export default class Manage extends Component {
             else
             {
               swal({
-                title: "Stock Adding Failed.",
+                title: "Stock Added Successfully.",
                 text: "           ",
-                icon: "error",
+                icon: "success",
                 timer: 2000,
                 button: false
               })
+              
             }
         })
+      })
         
         .catch(function (error) {
             console.log(error);
@@ -309,12 +387,13 @@ export default class Manage extends Component {
               <table className="table table-hover">
                   <thead>
                       <tr>
+                          <th>Serial No.</th>
                           <th>Company</th>
                           <th>Symbol</th>
                           <th>No. Of Stocks</th>
                           <th>Currency</th>
                           <th>Cost</th>
-                          <th>Date</th>
+                          <th>Date And Time</th>
                           <th>Market</th>
                           <th>Action</th>
                       </tr>
@@ -322,6 +401,7 @@ export default class Manage extends Component {
                   <tbody>
                   {this.state.details.map(id =>
                       <tr key={id}>
+                      <td>{id.sno}</td>
                       <td>{id.company} </td>
                       <td>{id.symbol}</td>
                       <td>{id.count}</td>
@@ -329,13 +409,151 @@ export default class Manage extends Component {
                       <td>{id.cost}</td>
                       <td>{id.date}</td>
                       <td>{id.market}</td>
-                      <td><a onClick={() => this.openModal(id)}>Edit</a>|<a>Delete</a></td>
+                      <td><MDBBtn outline color="info" size="sm" onClick={() => this.openModal(id)}>Edit</MDBBtn>|<MDBBtn outline color="danger" size="sm" onClick={() => this.deleteMember(id)}>Delete</MDBBtn></td>
                       </tr>
                   )}
                   </tbody>
               </table>
           </div>
       </div>
+      <Modal
+          isOpen={this.state.modalIsOpen}
+          onRequestClose={this.closeModal}
+          contentLabel="Edit" >
+                   <MDBContainer>
+      <MDBRow>
+        <MDBCol md="6">
+        <MDBCard>
+        <MDBCardBody>
+          <form method="post" onSubmit={this.onSubmit} action="http://localhost:4000/stocks/edit">
+            <p className="h5 text-center mb-4">Update the stock</p>
+            <div className="grey-text">
+              <MDBInput
+
+                label="Company"
+                icon="building"
+                type="text"
+                group
+                error="wrong"
+                success="right"
+                name="company"
+                placeholder={this.state.company}
+                title="Name cannot contain numbers"
+                value={this.state.company}
+                onChange={this.onChangeCompany}
+                required
+
+
+              />
+              <MDBInput
+                label="Symbol"
+                icon="chart-line"
+                group
+                type="text"
+                validate
+                error="wrong"
+                success="right"
+                name="symbol"
+                placeholder={this.state.symbol}
+                title="Please enter stock name"
+                value={this.state.symbol}
+                onChange={this.onChangeSymbol}
+                required
+              />
+              Eg. AAPL for Apple Inc.
+                  GOOGL for Alphabet Inc.
+                  BAJAJ-AUTO for Bajaj Automobiles
+
+              <MDBInput
+                label="No. Of Stocks"
+                icon="sort-numeric-down"
+                group
+                type="text"
+                validate
+                error="wrong"
+                success="right"
+                name="count"
+                placeholder={this.state.count}
+                title="Please enter number of stocks"
+                value={this.state.count}
+                onChange={this.onChangeCount}
+                required
+              />
+
+              <MDBInput 
+                label="Market"
+                icon="money-check"
+                group
+                type="text"
+                validate
+                error="wrong"
+                success="right"
+                name="market"
+                placeholder={this.state.market}
+                title="Please enter market name"
+                value={this.state.market}
+                onChange={this.onChangeMarket}
+              />
+              Eg. NYSE,NASDAQ,NSE,BSE
+              <MDBInput
+                label="Price When stock was bought"
+                icon="money-bill-wave"
+                type="text"
+                pattern="[0-9]{1,}"
+                title="Cost cannot be in alphabets"
+                validate
+                error="wrong"
+                success="right"
+                placeholder={this.state.cost}
+                name="cost"
+                value={this.state.cost}
+                onChange={this.onChangeCost}
+                required
+
+              />
+
+              <MDBInput
+                label="Currency"
+                icon="rupee-sign"
+                type="text"
+                pattern="[A-Z]{3}"
+                title="Currency cannot be in numbers"
+                validate
+                error="wrong"
+                success="right"
+                name="currency"
+                placeholder={this.state.currency}
+                value={this.state.currency}
+                onChange={this.onChangeCurrency}
+                required
+               />
+
+               Eg. USD for US Dollars INR for Indian Rupees
+              
+                <br/>
+                <br/>
+               <MDBIcon icon="calendar" className="font-weight-bold"/>
+               <h2 className="font-weight-bold">Date When Stock Was Bought</h2>
+               <br/>
+
+               <DatePicker
+                onChange={this.onChangeDate}
+                value={this.state.date}
+                maxDate={new Date()}
+                format="dd/MM/yyyy"
+                /> 
+              </div>
+            <div className="text-center">
+              <MDBBtn gradient="purple" type="submit">Update Stock</MDBBtn>
+            </div>
+          </form>
+          </MDBCardBody>
+          </MDBCard>
+        </MDBCol>
+      </MDBRow>
+    </MDBContainer>        
+
+      </Modal>
       </div>
   );
 }

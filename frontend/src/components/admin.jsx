@@ -154,7 +154,7 @@ export default class Admin extends Component {
               {
                 // alert("Account does not exist");
                 swal({
-                  title: "Successfully Login!",
+                  title: "Login Successfull!",
                   text: "     ",
                   icon: "success",
                   timer: 2000,
@@ -234,27 +234,6 @@ export default class Admin extends Component {
                       <td>{id.name} </td>
                       <td>{id.email}</td>
                       <td>{id.phone}</td>
-                      
-                      </tr>
-                  )}
-                  </tbody>
-              </table>
-          </div>
-      </div>
-      <div className="container"> 
-          <div className="panel panel-default p50 uth-panel">
-              <table className="table table-hover">
-                  <thead>
-                      <tr>
-                          <th>Market</th>
-                          <th>No. Of Stocks</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                  {this.state.market.map(id =>
-                      <tr key={id}>
-                      <td>{id.market} </td>
-                      <td>{id.qty}</td>
                       
                       </tr>
                   )}

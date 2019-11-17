@@ -9,10 +9,6 @@ import LivePrice from "./components/live";
 import Home from "./components/hometext";
 import Manage from"./components/StocksOwned";
 import Admin from "./components/admin";
-//import Details from "./components/details";
-
-
-
 
 
 function App() {
