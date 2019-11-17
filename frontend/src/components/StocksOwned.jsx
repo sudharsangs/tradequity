@@ -139,10 +139,7 @@ handleEdit(event) {
   }
 
   axios.post('http://localhost:4000/stocks/edit', encodeForm(data))
-        .then(function(response){
-          self.setState({
-            details: response.data.reverse()
-          })
+        
           .then(function (response) {
           if (response.data === 300)
           {
@@ -168,7 +165,6 @@ handleEdit(event) {
             
           }
       })
-    })
       
       .catch(function (error) {
           console.log(error);
@@ -186,10 +182,7 @@ deleteMember(member){
   }
 
   axios.post('http://localhost:4000/stocks/delete', encodeForm(data))
-        .then(function(response){
-          self.setState({
-            details: response.data.reverse()
-          })
+        
           .then(function (response) {
           if (response.data === 300)
           {
@@ -215,7 +208,7 @@ deleteMember(member){
             
           }
       })
-    })
+
       
       .catch(function (error) {
           console.log(error);
