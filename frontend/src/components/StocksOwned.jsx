@@ -40,6 +40,7 @@ export default class Manage extends Component {
       currency: '',
       date: new Date(),
       market: '',
+      sno: '',
       details: [],
       modalIsOpen: false
     }
@@ -130,6 +131,7 @@ handleEdit(event) {
       currency: this.state.currency,
       date: this.state.date,
       market: this.state.market,
+      sno: this.state.sno
   }
   
   const encodeForm = (data) => {
@@ -138,13 +140,13 @@ handleEdit(event) {
         .join('&');
   }
 
-  axios.post('http://localhost:4000/stocks/edit', encodeForm(data))
+  axios.post('http://localhost:4000/edit', encodeForm(data))
         
           .then(function (response) {
           if (response.data === 300)
           {
           swal({
-            title: "Stock Adding Failed",
+            title: "Stock Updating Failed",
             text: "          ",
             icon: "error",
             timer: 2000,
@@ -156,7 +158,7 @@ handleEdit(event) {
           else
           {
             swal({
-              title: "Stock Added Successfully.",
+              title: "Stock Updated Successfully.",
               text: "           ",
               icon: "success",
               timer: 2000,
@@ -172,6 +174,7 @@ handleEdit(event) {
 }
   
 deleteMember(member){
+  let self = this;
   var data = {
       id: member.sno
   }
@@ -181,13 +184,16 @@ deleteMember(member){
         .join('&');
   }
 
-  axios.post('http://localhost:4000/stocks/delete', encodeForm(data))
-        
+  axios.post('http://localhost:4000/delete', encodeForm(data))
+        .then(function(response){
+         self.setState({
+         details: response.data.reverse()
+        })
           .then(function (response) {
           if (response.data === 300)
           {
           swal({
-            title: "Stock Adding Failed",
+            title: "Stock Deleting Failed",
             text: "          ",
             icon: "error",
             timer: 2000,
@@ -199,7 +205,7 @@ deleteMember(member){
           else
           {
             swal({
-              title: "Stock Added Successfully.",
+              title: "Stock Deleted Successfully.",
               text: "           ",
               icon: "success",
               timer: 2000,
@@ -208,7 +214,7 @@ deleteMember(member){
             
           }
       })
-
+    })
       
       .catch(function (error) {
           console.log(error);
@@ -423,8 +429,9 @@ deleteMember(member){
                           <th>Company</th>
                           <th>Symbol</th>
                           <th>No. Of Stocks</th>
-                          <th>Currency</th>
                           <th>Cost</th>
+                          <th>Total</th>
+                          <th>Currency</th>
                           <th>Date And Time</th>
                           <th>Market</th>
                           <th>Action</th>
@@ -436,11 +443,12 @@ deleteMember(member){
                       <td>{id.company} </td>
                       <td>{id.symbol}</td>
                       <td>{id.count}</td>
-                      <td>{id.currency}</td>
                       <td>{id.cost}</td>
+                      <td>{id.cost*id.count}</td>
+                      <td>{id.currency}</td>
                       <td>{id.date}</td>
                       <td>{id.market}</td>
-                      <td><MDBBtn outline color="info" size="sm" onClick={() => this.openModal(id)}>Edit</MDBBtn>|<MDBBtn outline color="danger" size="sm" onClick={() => this.deleteMember(id)}>Delete</MDBBtn></td>
+                      <td><MDBBtn outline color="danger" size="sm" onClick={() => this.deleteMember(id)}>Delete</MDBBtn></td>
                       </tr>
                   )}
                   </tbody>
@@ -456,7 +464,7 @@ deleteMember(member){
         <MDBCol md="6">
         <MDBCard>
         <MDBCardBody>
-          <form method="post" onSubmit={this.onSubmit} action="http://localhost:4000/stocks/edit">
+          <form method="post" onSubmit={this.handleEdit} action="http://localhost:4000/edit">
             <p className="h5 text-center mb-4">Update the stock</p>
             <div className="grey-text">
               <MDBInput
